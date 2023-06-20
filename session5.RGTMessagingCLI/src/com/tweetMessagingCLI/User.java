@@ -1,4 +1,4 @@
-package session5.RGTMessagingCLI;
+package com.tweetMessagingCLI;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -105,6 +105,11 @@ public class User {
 	boolean deleteTweet(String userName, int tweetId) {
 		
 		return false;
+		
+	}
+
+	public void postTweet(String tweetId) {
+		tweets.add(tweetId);
 		
 	}
 }

@@ -1,4 +1,4 @@
-package session5.RGTMessagingCLI;
+package com.tweetMessagingCLI;
 
 import java.util.Scanner;
 

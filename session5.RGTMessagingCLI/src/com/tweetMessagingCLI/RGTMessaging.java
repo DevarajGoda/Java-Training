@@ -1,4 +1,4 @@
-package session5.RGTMessagingCLI;
+package com.tweetMessagingCLI;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -138,13 +138,14 @@ public class RGTMessaging {
 
    // Post tweet
 	void postTweet(Scanner scanner) {
-		System.out.print("Enter your tweetName :");
+		System.out.println("Enter your tweetName :");
 		String tweetId = scanner.next();
-		System.out.print("Enter content :");
+		System.out.println("Enter content :");
 		String content = scanner.next();
 
 		Tweet twt = new Tweet(tweetId, content, currentUser.getUserName(), LocalDateTime.now());
 		tweets.add(twt);
+		currentUser.postTweet(tweetId);
 		System.out.println("Post your Tweet successfully");
 		 
    }
@@ -191,11 +192,11 @@ public class RGTMessaging {
 	// get your Profile
 	void getProfile(Scanner scanner) {
 
-		System.out.println(currentUser.getName());
-		System.out.println(currentUser.getBio());
-		System.out.println(currentUser.getFollowers());
-		System.out.println(currentUser.getFollowings());
-		System.out.println(currentUser.getTweets());
+		System.out.println("User name :"+currentUser.getName());
+		System.out.println("User Bio :"+currentUser.getBio());
+		System.out.println("User Followers :"+currentUser.getFollowers().size());
+		System.out.println("User Followings :"+currentUser.getFollowings().size());
+		System.out.println("No of tweet :"+ currentUser.getTweets().size()+"\n tweets are :"+currentUser.getTweets().toString());
 
 		System.out.println("");
 		boolean b = true;
