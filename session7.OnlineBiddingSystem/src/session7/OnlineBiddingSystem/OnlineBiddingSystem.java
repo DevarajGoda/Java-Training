@@ -117,9 +117,9 @@ public class OnlineBiddingSystem {
 
 	private void createUser() {
 		System.out.print("Enter a username: ");
-		String username = scanner.next();// System.console().readLine();
+		String username = scanner.next(); 
 		System.out.print("Enter a password: ");
-		String password = scanner.next();// System.console().readLine();
+		String password = scanner.next(); 
 
 		userManagementService.createUser(username, password);
 
