@@ -90,7 +90,7 @@ public class VehicleRent {
 	private static void listAvailableVehicles(RentalService rentalService) {
 		List<Vehicle> availableVehicles = rentalService.getAvailableVehicles();
 		if (availableVehicles.isEmpty()) {
-			System.out.println("No vehicles available for rent.");
+			System.out.println("No vehicles available for rent, add the Vehicles first");
 		} else {
 			System.out.println("Available Vehicles:");
 			for (Vehicle vehicle : availableVehicles) {
@@ -104,6 +104,11 @@ public class VehicleRent {
 	}
 
 	private static void rentVehicle(RentalService rentalService, Scanner scanner) {
+		
+		List<Vehicle> availableVehicles = rentalService.getAvailableVehicles();
+		if (availableVehicles.isEmpty()) {
+			System.out.println("No vehicles available for rent.");
+		} else {
 		System.out.print("Enter your first name: ");
 		String firstName = scanner.nextLine();
 
@@ -139,9 +144,14 @@ public class VehicleRent {
 		} else {
 			System.out.println("Invalid license plateNo. Please try again.");
 		}
+		}
 	}
 
 	private static void calculateRentalCost(RentalService rentalService, Scanner scanner) {
+		List<Vehicle> availableVehicles = rentalService.getAvailableVehicles();
+		if (availableVehicles.isEmpty()) {
+			System.out.println("No vehicles available for rent.Please add the Vehicle first :");
+		} else {
 		System.out.print("Enter the rental ID: ");
 		String rentalId = scanner.nextLine();
 
@@ -151,6 +161,7 @@ public class VehicleRent {
 			System.out.println("Rental Cost: $" + rentalCost);
 		} else {
 			System.out.println("Invalid rental ID.");
+		}
 		}
 	}
 
