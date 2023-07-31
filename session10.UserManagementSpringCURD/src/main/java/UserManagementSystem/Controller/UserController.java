@@ -1,5 +1,6 @@
 package UserManagementSystem.Controller;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
@@ -20,47 +21,58 @@ import UserManagementSystem.Service.UserService;
 import UserManagementSystem.entity.User;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/User")
 public class UserController {
 
 	@Autowired
 	private UserService userService;
 
-	@PostMapping("/create")
-	public ResponseEntity<UserDomain> createUser(@RequestBody User user) throws IOException, ClassNotFoundException{
+	   @PostMapping()
+	    public ResponseEntity<UserDomain> createUser(@RequestBody User user) throws IOException {
+	        User createdUser = userService.createUser(user);
+	        if (createdUser != null) {
+	            UserDomain userDomain = new UserDomain();
+	            ObjectCopier.copyObject(createdUser, userDomain);
+	            return new ResponseEntity<>(userDomain, HttpStatus.CREATED);
+	        }
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+	    }
 
-		User users = userService.createUser(user);
-		if (users != null) {
-			UserDomain userDomain = new UserDomain();
-			ObjectCopier.copyObject(user, userDomain);
-			return new ResponseEntity<>(userDomain, HttpStatus.CREATED);
-		}
-		return new ResponseEntity<UserDomain>(HttpStatus.BAD_REQUEST);
-	}
+	   
+	    @GetMapping("/{id}")
+	    public ResponseEntity<UserDomain> getUser(@PathVariable(value = "id") Long id)
+	            throws ClassNotFoundException, IOException {
+	        try {
+	            User user = userService.getUser(id);
+	            if (user != null) {
+	                UserDomain userDomain = new UserDomain();
+	                ObjectCopier.copyObject(user, userDomain);
+	                return new ResponseEntity<>(userDomain, HttpStatus.OK);
+	            } else {
+	                return ResponseEntity.notFound().build();
+	            }
+	        } catch (FileNotFoundException e) {
+	            return ResponseEntity.notFound().build();
+	        }
+	    }
 
-	@GetMapping("/{id}")
-	public ResponseEntity<UserDomain> getUser(@PathVariable Long id) throws IOException, ClassNotFoundException {
-		User users = userService.getUser(id);
-		if (users != null) {
-			UserDomain userDomain = new UserDomain();
-			ObjectCopier.copyObject(users, userDomain);
-			return new ResponseEntity<>(userDomain, HttpStatus.OK);
-		}
-		return new ResponseEntity<UserDomain>(HttpStatus.BAD_REQUEST);
-	}
-	
-	@GetMapping
-	public ResponseEntity<List<User>> getUsers() throws IOException, ClassNotFoundException {
-		List<User> users = userService.getUsers();
-		return  new ResponseEntity<List<User>>(users, HttpStatus.OK);
-	 
-	}
-	
-	@DeleteMapping("/{id}")
-	public ResponseEntity <Boolean> deleteUser(@PathVariable Long id) throws IOException, ClassNotFoundException {
-		Boolean b = userService.deleteUser(id);
-		return new ResponseEntity<>(b, HttpStatus.OK);
-		
-	}
-
+	     
+	    @GetMapping()
+	    public ResponseEntity<List<UserDomain>> getUsers() throws IOException, ClassNotFoundException {
+	        List<UserDomain> listuserDomain = new ArrayList<>();
+	        List<User> listUsers = userService.getUsers();
+	        if (!listUsers.isEmpty()) {
+	            for (User user : listUsers) {
+	                UserDomain userDomain = new UserDomain();
+	                ObjectCopier.copyObject(user, userDomain);
+	                userDomain.setId(user.getId());
+	                userDomain.setUsername(user.getUsername());
+	                userDomain.setFirstName(user.getFirstName());
+	                userDomain.setLastName(user.getLastName());
+	                userDomain.setEmail(user.getEmail());
+	                listuserDomain.add(userDomain);
+	            }
+	        }
+	        return new ResponseEntity<>(listuserDomain, HttpStatus.OK);
+	    }
 }

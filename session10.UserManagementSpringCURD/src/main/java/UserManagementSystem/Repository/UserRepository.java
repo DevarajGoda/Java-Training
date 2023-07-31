@@ -9,29 +9,39 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.IdGenerator;
 
 import UserManagementSystem.Domain.UserDomain;
-import UserManagementSystem.entity.IdGenerated;
 import UserManagementSystem.entity.User;
 
 @Repository
 public class UserRepository {
-	
-	private final String dataDir = "data/users/";
-	
-	private final IdGenerated idGenerated = new IdGenerated();
-	
-    public User save(User user) throws IOException {  
-    	user.setId(idGenerated.generateId());
+
+    private final String dataDir = "data/users/";
+
+    @Autowired
+    private IdGenerator idGenerator;
+
+    /**
+     * Saves a user object to the file-based storage.
+     *
+     * @param user The user object to be saved.
+     * @return The user object that has been saved.
+     * @throws IOException If there is an I/O error during the save process.
+     */
+    public User save(User user) throws IOException {
+        user.setId(idGenerator.generateId());
         File file = new File(dataDir + user.getId() + ".ser");
         try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(file))) {
             out.writeObject(user);
         }
-        idGenerated.storeLastId();
+        idGenerator.storeLastId();
         return user;
     }
 
+    
     public User findById(Long id) throws IOException, ClassNotFoundException {
         File file = new File(dataDir + id + ".ser");
         try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(file))) {
@@ -39,6 +49,7 @@ public class UserRepository {
         }
     }
 
+    
     public List<User> findAll() throws IOException, ClassNotFoundException {
         List<User> users = new ArrayList<>();
         File dir = new File(dataDir);
@@ -49,17 +60,10 @@ public class UserRepository {
         }
         return users;
     }
-    
-    public Boolean deleteUser(Long id) throws IOException, ClassNotFoundException {
-    	  File file = new File(dataDir + id + ".ser");
-    	  if(id != null) {
-    	 return file.delete();
-    	  }
-    	  else {
-    		  System.out.println("File not exit");
-    	  }
-		return false;
-    }
-    
 
+    
+    public void delete(Long id) throws IOException, ClassNotFoundException {
+        File file = new File(dataDir + id + ".ser");
+        file.delete();
+    }
 }

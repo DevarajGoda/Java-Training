@@ -11,26 +11,16 @@ import UserManagementSystem.Repository.UserRepository;
 import UserManagementSystem.entity.User;
 
 @Service
-public class UserService {
+public interface UserService {
+
 	
-	@Autowired
-    private UserRepository userRepository;
-
-    public User createUser(User user) throws IOException {
-        user.setId(System.currentTimeMillis());
-        return userRepository.save(user);
-    }
-
-    public User getUser(Long id) throws IOException, ClassNotFoundException {
-        return userRepository.findById(id);
-    }
-
-    public List<User> getUsers() throws IOException, ClassNotFoundException {
-        return userRepository.findAll();
-    }
-
-	public Boolean deleteUser(Long id) throws ClassNotFoundException, IOException {
-		return userRepository.deleteUser(id);
-	}
-
+	public User createUser(User user) throws IOException;
+	
+	public User updateUser(Long id, User user) throws IOException, ClassNotFoundException;
+	
+	public User getUser(Long id) throws IOException, ClassNotFoundException;
+	
+	public List<User> getUsers() throws IOException, ClassNotFoundException;
+	
+	public void deleteUser(Long id) throws IOException, ClassNotFoundException;
 }

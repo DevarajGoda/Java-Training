@@ -1,20 +1,19 @@
 package UserManagementSystem.entity;
 
 import java.io.Serializable;
+import java.util.UUID;
 
-public class User implements Serializable {
+public class User implements Serializable{
+
 	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 	private Long id;
 	private String username;
-    private String password;
-    private String firstName;
-    private String lastName;
-    private String email;
-    
+	private String password;
+	private String firstName;
+	private String lastName;
+	private String email;
+	
+	
 	public Long getId() {
 		return id;
 	}
@@ -45,6 +44,8 @@ public class User implements Serializable {
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
+	
+	
 	public String getEmail() {
 		return email;
 	}
@@ -53,7 +54,6 @@ public class User implements Serializable {
 	}
 	
 	public User(Long id, String username, String password, String firstName, String lastName, String email) {
-		super();
 		this.id = id;
 		this.username = username;
 		this.password = password;
@@ -61,7 +61,10 @@ public class User implements Serializable {
 		this.lastName = lastName;
 		this.email = email;
 	}
-    
-    
-
+	public void setId(UUID generateId) {
+		 
+		
+	}
+	
+	
 }

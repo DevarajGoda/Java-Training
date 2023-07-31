@@ -4,17 +4,21 @@ import java.io.Serializable;
 
 public class UserDomain implements Serializable {
 	
-	private int id;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private Long id;
 	private String username;
     private String firstName;
     private String lastName;
     private String email;
     
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
 	
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	
